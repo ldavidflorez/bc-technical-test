@@ -1,0 +1,8 @@
+totalContactoClientes=250
+motivoReclamo=25
+motivoGarantia=1
+motivoDuda=100
+motivoCompra=10
+motivoFelicitaciones=70
+motivoCambio=8
+hash=a8a2f79691426441fe037c5b7c2ec3c5

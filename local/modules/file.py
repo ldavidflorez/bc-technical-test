@@ -33,17 +33,17 @@ def get_file_hash(file_content: str) -> str:
 is_file_correct = lambda generated_hash, file_hash: generated_hash == file_hash
 
 
-if __name__ == "__main__":
-    # Set file path
-    file_path = "../files/my-file.txt"
+# if __name__ == "__main__":
+#     # Set file path
+#     file_path = "../files/my-file.txt"
 
-    # Check functions
-    file_content = get_file_content(file_path)
-    generated_hash = file_to_hash(file_content)
-    file_hash = get_file_hash(file_content)
-    are_equal = is_file_correct(generated_hash, file_hash)
+#     # Check functions
+#     file_content = get_file_content(file_path)
+#     generated_hash = file_to_hash(file_content)
+#     file_hash = get_file_hash(file_content)
+#     are_equal = is_file_correct(generated_hash, file_hash)
 
-    # Print results
-    print(f"Generated hash: {generated_hash}")
-    print(f"File hash: {file_hash}")
-    print(f"Are equal? R\ {are_equal}")
+#     # Print results
+#     print(f"Generated hash: {generated_hash}")
+#     print(f"File hash: {file_hash}")
+#     print(f"Are equal? R\ {are_equal}")

@@ -9,18 +9,24 @@ def get_file_content(file_path: str) -> list:
 
 # Transform file content to md5 hash
 def file_to_hash(file_content: str) -> str:
-    md5 = hashlib.md5()
-    lines = list(line for line in (l.strip() for l in file_content.split("\n")) if line)[:-1]
-    string_to_hash = "~".join(list(map(lambda s: s.split("=")[1], lines)))
-    md5.update(string_to_hash.encode())
-    return md5.hexdigest()
+    try:
+        md5 = hashlib.md5()
+        lines = list(line for line in (l.strip() for l in file_content.split("\n")) if line)[:-1]
+        string_to_hash = "~".join(list(map(lambda s: s.split("=")[1], lines)))
+        md5.update(string_to_hash.encode())
+        return md5.hexdigest()
+    except Exception as e:
+        print(f"Error hashing file content: {e}")
 
 
 # Get inner file hash
 def get_file_hash(file_content: str) -> str:
-    hash_line = list(line for line in (l.strip() for l in file_content.split("\n")) if line)[-1]
-    file_hash = hash_line.split("=")[-1]
-    return file_hash
+    try:
+        hash_line = list(line for line in (l.strip() for l in file_content.split("\n")) if line)[-1]
+        file_hash = hash_line.split("=")[-1]
+        return file_hash
+    except Exception as e:
+        print("Error getting inner file hash: {e}")
 
 
 # Compare two hashes

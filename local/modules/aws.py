@@ -51,12 +51,32 @@ def store_in_dynamodb(table_name: str, item: dict, credentials: dict):
         print(f"Error storing item in DynamoDB: {e}")
 
 
+# Invoke the Lambda function (to test permissions)
+def invoke_lambda_function(credentials, function_name, payload):
+    lambda_client = boto3.client(
+        'lambda',
+        aws_access_key_id=credentials['aws_access_key_id'],
+        aws_secret_access_key=credentials['aws_secret_access_key'],
+        region_name=credentials['region_name']
+    )
+    
+    response = lambda_client.invoke(
+        FunctionName=function_name,
+        InvocationType='RequestResponse',
+        Payload=json.dumps(payload)
+    )
+    
+    response_payload = json.loads(response['Payload'].read())
+    return response_payload
+
+
 if __name__ == "__main__":
     # File paths and names
     credentials_file_path = "../files/credentials.json"
     bucket_name = "ai-technical-test-luis-david"
     file_key = "my-file.txt"
     table_name = "ai-technical-test-luis-david"
+    function_name = "ai-technical-test-luis-david"
 
     # Load credentials
     credentials = load_credentials(credentials_file_path)
@@ -75,3 +95,16 @@ if __name__ == "__main__":
     
     # Store the item in DynamoDB
     store_in_dynamodb(table_name, file_content_as_dict, credentials)
+    
+    # Define the payload to send to the Lambda function
+    payload = {
+        # Add any necessary key-value pairs for the Lambda function
+    }
+    
+    # Invoke the Lambda function
+    try:
+        result = invoke_lambda_function(credentials, function_name, payload)
+        print("Lambda function result:")
+        print(json.dumps(result, indent=4))
+    except Exception as e:
+        print(f"Error invoking Lambda function: {e}")

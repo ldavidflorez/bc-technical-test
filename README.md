@@ -21,7 +21,7 @@ Si deseas ejecutar los tests unitarios de la aplicación localmente, puedes ejec
 pytest
 ```
 
-Además, se proporciona un informe de cobertura de los tests en local/tests/htmlcov.
+Además, se proporciona un informe de cobertura de los tests en local/tests/coverage_re.
 
 Finalmente, la carpeta lambda-aws contiene un archivo llamado lambda_function.py, que encapsula toda la funcionalidad necesaria para ejecutar la aplicación en AWS Lambda Function. Recuerda que debes configurar los permisos de la Lambda Function previamente para asegurar el correcto funcionamiento, esto incluye otorgar acceso al bucket de S3 y a la tabla de DynamoDB. También es importante añadir un disparador manualmente a tu Lambda Function para que sea activada cuando llegue un nuevo archivo al bucket de S3.
 

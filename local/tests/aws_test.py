@@ -6,6 +6,7 @@ from ..modules.aws import (
     file_to_dict,
     read_file_from_s3,
     store_in_dynamodb,
+    delete_file_from_s3   
 )
 
 @pytest.fixture
@@ -18,7 +19,7 @@ def load_credentials():
 def sample_file_content():
     return "totalContactoClientes=250\nmotivoReclamo=25\nmotivoGarantia=10\nmotivoDuda=100\nmotivoCompra=100\nmotivoFelicitaciones=7\nmotivoCambio=8\nhash=2f941516446dce09bc2841da60bf811f\n"
 
-
+    
 def test_file_to_dict(sample_file_content):
     expected_dict = {
         "totalContactoClientes": "250",
@@ -33,20 +34,29 @@ def test_file_to_dict(sample_file_content):
     result_dict = file_to_dict(sample_file_content)
     assert result_dict == expected_dict
 
+
 def test_read_file_from_s3(load_credentials, sample_file_content):
     bucket_name = "ai-technical-test-luis-david"
     file_key = "my-file.txt"
-    
-    s3 = boto3.client(
-        "s3",
-        aws_access_key_id=load_credentials["aws_access_key_id"],
-        aws_secret_access_key=load_credentials["aws_secret_access_key"],
-        region_name=load_credentials["region_name"]
-    )
-        
+
     file_content = read_file_from_s3(bucket_name, file_key, load_credentials)
     assert file_content == sample_file_content
 
+
+def test_delete_file_from_s3_success(load_credentials):
+    bucket_name = "ai-technical-test-luis-david"
+    file_key = "my-file.txt"
+    response = delete_file_from_s3(bucket_name, file_key, load_credentials)
+    assert response == "ok"
+    
+    
+def test_delete_file_from_s3_error(load_credentials):
+    bucket_name = "ai-technical-test-luis-david"
+    file_key = "my-file.txt"
+    response = delete_file_from_s3(bucket_name, file_key, load_credentials)
+    assert response == "ko"
+    
+         
 def test_store_in_dynamodb(load_credentials):
     table_name = "ai-technical-test-luis-david"
     

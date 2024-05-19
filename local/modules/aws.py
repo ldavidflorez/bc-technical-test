@@ -1,6 +1,5 @@
 import json
 import boto3
-from datetime import datetime
 
 
 # Load AWS credentials from a JSON file
@@ -35,6 +34,22 @@ def read_file_from_s3(bucket_name: str, file_key: str, credentials: str) -> str:
         return None
 
 
+# Delete S3 file
+def delete_file_from_s3(bucket_name: str, file_key: str, credentials: str):
+    s3 = boto3.client(
+        "s3",
+        aws_access_key_id=credentials["aws_access_key_id"],
+        aws_secret_access_key=credentials["aws_secret_access_key"],
+        region_name=credentials["region_name"]
+    )
+
+    try:
+        s3.delete_object(Bucket=bucket_name, Key=file_key)
+        return "ok"
+    except Exception as e:
+        return "ko"
+        
+        
 # Store data in DynamoDB
 def store_in_dynamodb(table_name: str, item: dict, credentials: dict):
     dynamodb = boto3.resource(
@@ -77,7 +92,5 @@ def store_in_dynamodb(table_name: str, item: dict, credentials: dict):
 #     # Store the item in DynamoDB
 #     store_in_dynamodb(table_name, file_content_as_dict, credentials)
     
-#     # Define the payload to send to the Lambda function
-#     payload = {
-#         # Add any necessary key-value pairs for the Lambda function
-#     }
+#     # Delete S3 file
+#     result = delete_file_from_s3(bucket_name, file_key, credentials)

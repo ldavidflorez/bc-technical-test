@@ -42,3 +42,7 @@ if __name__ == "__main__":
     
     # Store the item in DynamoDB
     store_in_dynamodb(table_name, file_content_as_dict, credentials)
+    
+    # Delete S3 file
+    result = delete_file_from_s3(bucket_name, file_key, credentials)
+    print(result)

@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 # Load AWS credentials from a JSON file
-def load_credentials(file_path):
+def load_credentials(file_path: str) -> dict:
     with open(file_path, "r") as f:
         return json.load(f)
 
@@ -19,7 +19,7 @@ def file_to_dict(file_as_string: str) -> dict:
 
 
 # Connect to S3 and read the file
-def read_file_from_s3(bucket_name, file_key, credentials):
+def read_file_from_s3(bucket_name: str, file_key: str, credentials: str) -> str:
     s3 = boto3.client(
         "s3",
         aws_access_key_id=credentials["aws_access_key_id"],
@@ -36,7 +36,7 @@ def read_file_from_s3(bucket_name, file_key, credentials):
 
 
 # Store data in DynamoDB
-def store_in_dynamodb(table_name, item, credentials):
+def store_in_dynamodb(table_name: str, item: dict, credentials: dict):
     dynamodb = boto3.resource(
         "dynamodb",
         aws_access_key_id=credentials["aws_access_key_id"],
@@ -50,10 +50,10 @@ def store_in_dynamodb(table_name, item, credentials):
     except Exception as e:
         print(f"Error storing item in DynamoDB: {e}")
 
-# Main function
-def main():
+
+if __name__ == "__main__":
     # File paths and names
-    credentials_file_path = "credentials.json"
+    credentials_file_path = "../files/credentials.json"
     bucket_name = "ai-technical-test-luis-david"
     file_key = "my-file.txt"
     table_name = "ai-technical-test-luis-david"
@@ -67,7 +67,7 @@ def main():
     # Create PK (timestamp) for DynamoDB table
     timestamp = datetime.now().timestamp() * 1000
     
-    # Transform file content to json format
+    # Transform file content to dict format
     file_content_as_dict = file_to_dict(file_content)
     
     # Add PK
@@ -75,6 +75,3 @@ def main():
     
     # Store the item in DynamoDB
     store_in_dynamodb(table_name, file_content_as_dict, credentials)
-
-if __name__ == "__main__":
-    main()
